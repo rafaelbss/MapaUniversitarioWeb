@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	  xmlns:h="http://xmlns.jcp.org/jsf/html"
+	  xmlns:f="http://xmlns.jcp.org/jsf/core"
+	  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	  xmlns:p="http://primefaces.org/ui">
+
+	<h:head>
+		<f:facet name="first">
+			<meta charset="UTF-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1" />
+		</f:facet>
+	
+		<title>#{msg['project.name']}</title>
+	
+		<!-- Referências CSS neste template -->
+		<h:outputStylesheet library="mu" name="css/custom.css" />
+		<h:outputStylesheet library="mu" name="css/layout.css" />
+		<h:outputStylesheet library="mu" name="css/components.css" />
+		
+		<!-- Referências JavaScript neste template -->
+		<h:outputScript target="body" library="primefaces" name="jquery/jquery.js" />
+		<h:outputScript target="body" library="mu" name="js/app.js" />
+		<h:outputScript target="body" library="mu" name="js/maps.js" />
+		<h:outputScript target="body" library="mu" name="js/geocode.js" />
+		
+		<script src="#{app['google.maps.url']}" type="text/javascript" />
+	</h:head>
+
+	<h:body>
+		<h:form>
+			<header class="aw-topbar">
+				<h:graphicImage library="mu" name="img/logo.png" />
+				
+				<p:commandLink action="#{userBean.socialConnect}" styleClass="image-facebook" rendered="#{!userBean.user.logged}">
+					<h:graphicImage library="mu" name="img/facebook.png" styleClass="image-add" title="#{msg['button.facebook.authenticate.title']}" />
+					<f:setPropertyActionListener target="#{userBean.providerID}" value="facebook" />
+					<f:setPropertyActionListener target="#{userBean.trigger}" value="header" />
+				</p:commandLink>
+				
+				<p:commandLink action="#{userBean.logout}" update="@all" styleClass="image-logout" rendered="#{userBean.user.logged}">
+					<h:graphicImage library="mu" name="img/logout.png" styleClass="image-add" title="#{msg['button.logout.title']}" />
+				</p:commandLink>
+				
+				<p:commandButton value="Conectar usando Facebook" update="@all" action="#{userBean.socialConnect}" icon="fa fa-facebook-official" styleClass="facebook-connect-button" rendered="false">
+					<f:setPropertyActionListener target="#{userBean.providerID}" value="facebook" />
+					<f:setPropertyActionListener target="#{userBean.trigger}" value="header" />
+				</p:commandButton>
+				
+				<a href="#" class="aw-toggle  js-toggle"><i class="fa  fa-bars"></i></a>
+				
+				<p:commandLink action="#{userBean.addMarker}" rendered="#{userBean.user.logged}" styleClass="image-add">
+					<h:graphicImage library="mu" name="img/add.png" styleClass="image-add" title="#{msg['button.add.title']}" />
+					<p:ajax event="dialogReturn" process="@this" listener="#{mapBean.postSaveActions}" update="msgs geoMap menuMarkers" />
+				</p:commandLink>
+				
+	        	<h:graphicImage value="#{userBean.user.profileImageUrl}" styleClass="facebook-image" rendered="#{userBean.user.logged}" />
+				
+				<p:outputLabel value="#{userBean.user.name}" styleClass="facebook-label-name" rendered="#{userBean.user.logged}" />
+				<p:messages id="msgs" closable="true" autoUpdate="true" styleClass="message" />
+				
+				<p:commandButton value="Adicionar item" actionListener="#{userBean.addMarker}" rendered="false" styleClass="facebook-connect-button">
+					<p:ajax event="dialogReturn" process="@this" listener="#{mapBean.postSaveActions}" update="msgs geoMap" />
+				</p:commandButton>
+				
+			</header>
+			
+			<aside class="aw-sidebar  js-sidebar">
+				<ui:include src="menu.xhtml" />
+			</aside>
+			
+			<section class="aw-content  js-content">
+				<ui:insert name="content" />
+			</section>
+		</h:form>
+	</h:body>
+</html>

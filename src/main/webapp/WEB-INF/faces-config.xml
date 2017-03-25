@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+    version="2.2">
+    
+   	<factory>
+		<exception-handler-factory>
+			app.web.mu.jsf.util.JsfExceptionHandlerFactory
+		</exception-handler-factory>
+	</factory>
+	
+	<converter>
+  		<converter-for-class>java.lang.Enum</converter-for-class>
+  		<converter-class>javax.faces.convert.EnumConverter</converter-class>
+	</converter>
+    
+    <application>
+    
+		<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+        <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+        <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+        
+    	<locale-config>
+    		<default-locale>pt</default-locale>
+    		<supported-locale>pt</supported-locale>
+    		<supported-locale>en</supported-locale>
+    	</locale-config>
+    	<resource-bundle>
+    		<base-name>app.web.mu.message</base-name>
+    		<var>msg</var>
+    	</resource-bundle>
+    	<resource-bundle>
+    		<base-name>app.web.mu.application</base-name>
+    		<var>app</var>
+    	</resource-bundle>
+    </application>
+
+</faces-config>
